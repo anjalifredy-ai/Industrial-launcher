@@ -116,7 +116,7 @@ object VersionsManager {
                     }
                 }
 
-                versions = newVersions.toList()
+                versions = newVersions.sortedWith(VersionComparator)
 
                 gameInfo = refreshCurrentInfo()
                 lDebug("Version list refreshed, refreshing the current version now.")
