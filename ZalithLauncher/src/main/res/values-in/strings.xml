@@ -1201,4 +1201,14 @@
     <string name="settings_launcher_home_page_type_warning">Beranda kustom adalah konten pihak ketiga. Launcher tidak memberikan jaminan atas kontennya. Harap berhati-hati saat menggunakan beranda yang tidak dikenal!</string>
     <string name="settings_launcher_home_page_url">URL beranda:</string>
     <string name="settings_launcher_home_page_loading">Memuat beranda</string>
+    <string name="game_vulkan_check_title">Cek Vulkan</string>
+    <string name="game_vulkan_check_text">Periksa apakah perangkat kamu bisa menjalankan Minecraft 26.2+ dengan Vulkan. Hasil ini hanya untuk referensi saja.</string>
+    <string name="game_vulkan_check_version">Versi Vulkan: %s</string>
+    <string name="game_vulkan_check_turnip">Menggunakan Turnip: %s</string>
+    <string name="game_vulkan_check_extensions">Ekstensi yang diperlukan:</string>
+    <string name="game_vulkan_check_missing_extensions">Ekstensi yang tidak tersedia:</string>
+    <string name="game_vulkan_check_features">Fitur yang diperlukan:</string>
+    <string name="game_vulkan_check_missing_features">Fitur yang tidak tersedia:</string>
+    <string name="game_vulkan_check_unsupp">Perangkat kamu tidak bisa menjalankan Minecraft 26.2+ dengan vulkan</string>
+    <string name="game_vulkan_check_supp">Perangkat kamu bisa menjalankan Minecraft 26.2+ dengan Vulkan</string>
 </resources>
