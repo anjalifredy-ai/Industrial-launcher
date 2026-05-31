@@ -403,6 +403,9 @@
     <string name="game_menu_option_hotbar_rule_custom">Custom</string>
     <string name="game_menu_option_hotbar_width">Hotbar Width</string>
     <string name="game_menu_option_hotbar_height">Hotbar Height</string>
+    <string name="game_menu_option_hotbar_double_click">Double-tap to swap item with off hand</string>
+    <string name="game_menu_option_hotbar_long_click">Long press to drop selected item</string>
+    <string name="game_menu_option_hotbar_long_click_delay">Long press hotbar trigger delay</string>
     <string name="game_menu_option_show_menu">Enable Menu Overlay</string>
     <string name="game_menu_option_show_menu_hided">Game menu overlay has been disabled. You can open the game menu using the system back button</string>
     <string name="game_menu_option_controls_opacity">Control Layout Opacity</string>

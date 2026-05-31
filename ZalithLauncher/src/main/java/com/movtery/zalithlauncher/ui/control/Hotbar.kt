@@ -71,6 +71,7 @@ import com.movtery.zalithlauncher.game.keycodes.SWAP_OFFHAND
 import com.movtery.zalithlauncher.game.keycodes.SWAP_OFFHAND_VALUE
 import com.movtery.zalithlauncher.game.keycodes.mapToKeycode
 import com.movtery.zalithlauncher.game.launch.MCOptions
+import com.movtery.zalithlauncher.setting.AllSettings
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -205,14 +206,13 @@ fun BoxScope.MinecraftHotbar(
                         slotCount = hotbarList.size,
                         hotbarSize = hotbarSize,
                         density = density,
-                        longClickDelay = 300L,
+                        longClickDelay = AllSettings.hotbarLongClickDelay.state.toLong(),
                         onClick = { index ->
                             val keycode = calculateSlotKeycode(index)
                             sendKeycode(keycode)
                         },
-                        onDoubleClick = { index ->
-                            val keycode = calculateSlotKeycode(index)
-                            sendKeycode(keycode)
+                        enableDoubleClick = AllSettings.hotbarDoubleClick.state,
+                        onDoubleClick = {
                             //发送切换副手按键键值
                             val swapKeycode = getKeycode(
                                 optionKey = SWAP_OFFHAND,
@@ -221,9 +221,8 @@ fun BoxScope.MinecraftHotbar(
                             )
                             sendKeycode(swapKeycode)
                         },
-                        onLongClick = { index ->
-                            val keycode = calculateSlotKeycode(index)
-                            sendKeycode(keycode)
+                        enableLongClick = AllSettings.hotbarLongClick.state,
+                        onLongClick = {
                             //发送丢弃按键键值
                             val dropKeycode = getKeycode(
                                 optionKey = DROP,
@@ -260,13 +259,15 @@ private fun Modifier.mainTouchLogic(
     hotbarSize: DpSize,
     density: Density,
     longClickDelay: Long,
+    enableDoubleClick: Boolean,
+    enableLongClick: Boolean,
     onClick: (index: Int) -> Unit,
-    onDoubleClick: (index: Int) -> Unit,
-    onLongClick: (index: Int) -> Unit,
+    onDoubleClick: () -> Unit,
+    onLongClick: () -> Unit,
     onOccupiedPointer: (PointerId) -> Unit,
     onReleasePointer: (PointerId) -> Unit
 ): Modifier = this.pointerInput(
-    slotCount, hotbarSize, density, longClickDelay
+    slotCount, hotbarSize, density, longClickDelay, enableDoubleClick, enableLongClick
 ) {
     val touchSlop = viewConfiguration.touchSlop
     val doubleTapTimeout = viewConfiguration.doubleTapTimeoutMillis
@@ -295,6 +296,8 @@ private fun Modifier.mainTouchLogic(
 
                             val x = change.position.x
                             val slotIndex = calculateSlotIndex(x, hotbarSize, slotCount, density)
+                            //碰到就视为点击，避免后续逻辑临时切物品栏导致游戏状态不同步
+                            onClick(slotIndex)
 
                             val state = PointerState(
                                 initialPosition = change.position,
@@ -303,14 +306,18 @@ private fun Modifier.mainTouchLogic(
                                 isPressed = true
                             )
 
-                            //启动长按检测
-                            state.longPressJob = launch {
-                                delay(longClickDelay)
-                                if (state.isPressed && !state.isMovedBeyondSlop && !state.isLongPressedTriggered) {
-                                    state.isLongPressedTriggered = true
-                                    //触发长按，使用当前所在的栏位进行回调
-                                    onLongClick(state.currentSlotIndex)
-                                    lastSlot = null
+                            //仅启用长按时启动检测
+                            if (enableLongClick) {
+                                state.longPressJob = launch {
+                                    delay(longClickDelay)
+                                    if (state.isPressed && !state.isMovedBeyondSlop && !state.isLongPressedTriggered) {
+                                        state.isLongPressedTriggered = true
+                                        //触发长按，使用当前所在的栏位进行回调
+                                        onLongClick()
+                                        if (enableDoubleClick) {
+                                            lastSlot = null
+                                        }
+                                    }
                                 }
                             }
 
@@ -324,11 +331,13 @@ private fun Modifier.mainTouchLogic(
                             //滑动时实时计算并更新当前槽位
                             state.currentSlotIndex = calculateSlotIndex(change.position.x, hotbarSize, slotCount, density)
 
-                            val distance = (change.position - state.initialPosition).getDistance()
-                            if (!state.isMovedBeyondSlop && distance > touchSlop) {
-                                state.isMovedBeyondSlop = true
-                                state.longPressJob?.cancel()
-                                state.longPressJob = null
+                            if (enableLongClick) {
+                                val distance = (change.position - state.initialPosition).getDistance()
+                                if (!state.isMovedBeyondSlop && distance > touchSlop) {
+                                    state.isMovedBeyondSlop = true
+                                    state.longPressJob?.cancel()
+                                    state.longPressJob = null
+                                }
                             }
 
                             change.consume()
@@ -339,15 +348,21 @@ private fun Modifier.mainTouchLogic(
                             val state = states.remove(pointerId) ?: return@forEach
                             state.isPressed = false
                             state.longPressJob?.cancel()
+                            state.longPressJob = null
 
                             if (pointerId in occupiedPointers) {
                                 occupiedPointers.remove(pointerId)
                                 onReleasePointer(pointerId)
                             }
 
-                            //未触发长按
-                            if (!state.isLongPressedTriggered) {
-                                val finalSlotIndex = state.currentSlotIndex
+                            //长按已触发，不再处理点击
+                            if (state.isLongPressedTriggered) {
+                                change.consume()
+                                return@forEach
+                            }
+
+                            val finalSlotIndex = state.currentSlotIndex
+                            if (enableDoubleClick) {
                                 val isDoubleTap = lastSlot?.let { last ->
                                     //检查是当前点击的栏位
                                     val isSlot = last.slot == finalSlotIndex
@@ -360,7 +375,7 @@ private fun Modifier.mainTouchLogic(
                                 } ?: false
 
                                 if (isDoubleTap) {
-                                    onDoubleClick(finalSlotIndex)
+                                    onDoubleClick()
                                     lastSlot = null
                                 } else {
                                     onClick(finalSlotIndex)
@@ -370,6 +385,8 @@ private fun Modifier.mainTouchLogic(
                                         downTime = currentTime,
                                     )
                                 }
+                            } else {
+                                onClick(finalSlotIndex)
                             }
 
                             change.consume()

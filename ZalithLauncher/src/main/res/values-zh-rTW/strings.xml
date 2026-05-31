@@ -365,6 +365,9 @@
     <string name="game_menu_option_hotbar_rule_custom">自訂</string>
     <string name="game_menu_option_hotbar_width">快捷列寬度</string>
     <string name="game_menu_option_hotbar_height">快捷列高度</string>
+    <string name="game_menu_option_hotbar_double_click">雙擊互換雙手物品</string>
+    <string name="game_menu_option_hotbar_long_click">長按丟棄已選擇的物品</string>
+    <string name="game_menu_option_hotbar_long_click_delay">長按快捷欄觸發延遲</string>
     <string name="game_menu_option_show_menu">開啟選單懸浮窗</string>
     <string name="game_menu_option_show_menu_hided">已關閉遊戲選單懸浮窗，您可以透過系統返回鍵呼叫遊戲選單</string>
     <string name="game_menu_option_controls_opacity">控制佈局不透明度</string>

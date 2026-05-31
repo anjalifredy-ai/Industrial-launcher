@@ -402,6 +402,9 @@
     <string name="game_menu_option_hotbar_rule_custom">自定义</string>
     <string name="game_menu_option_hotbar_width">快捷栏宽度</string>
     <string name="game_menu_option_hotbar_height">快捷栏高度</string>
+    <string name="game_menu_option_hotbar_double_click">双击与副手交换物品</string>
+    <string name="game_menu_option_hotbar_long_click">长按丢弃所选物品</string>
+    <string name="game_menu_option_hotbar_long_click_delay">长按快捷栏触发延迟</string>
     <string name="game_menu_option_show_menu">开启菜单悬浮窗</string>
     <string name="game_menu_option_show_menu_hided">已关闭游戏菜单悬浮窗，您可以通过系统返回键调用游戏菜单</string>
     <string name="game_menu_option_controls_opacity">控制布局不透明度</string>
