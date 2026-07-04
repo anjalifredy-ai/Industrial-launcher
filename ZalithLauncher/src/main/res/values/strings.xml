@@ -1,6 +1,6 @@
-<string name="unofficial_notice">Nexus Launcher is an unofficial modified version of Zalith Launcher, not affiliated with the original project.</string>
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+   <string name="unofficial_notice">Nexus Launcher is an unofficial modified version of Zalith Launcher, not affiliated with the original project.</string>
     <string name="generic_cancel">Cancel</string>
     <string name="generic_confirm">Confirm</string>
     <string name="generic_error">Error</string>
