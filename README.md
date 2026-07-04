@@ -1,3 +1,5 @@
+> **⚠️ Unofficial Modified Version**
+> This is "Nexus Launcher", an unofficial modified version of [Zalith Launcher](https://github.com/ZalithLauncher/ZalithLauncher2), created independently and not affiliated with or endorsed by the original ZalithLauncher project/team.
 # Zalith Launcher 2
 ![Downloads](https://img.shields.io/github/downloads/ZalithLauncher/ZalithLauncher2/total)
 [![Sponsor](https://img.shields.io/badge/sponsor-30363D?logo=GitHub-Sponsors)](https://afdian.com/a/MovTery)
