@@ -301,20 +301,76 @@ fun LauncherScreen(
                                     modifier = Modifier.align(Alignment.BottomStart),
                                     verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
-                                    Text(
-                                        text = "Latest version  •  " +
-                                            (VersionsManager.currentVersion.value?.getVersionName() ?: "Choose version"),
-                                        style = MaterialTheme.typography.labelMedium,
-                                        color = MaterialTheme.colorScheme.onSurface
-                                    )
-                                    ScalingActionButton(
-                                        modifier = Modifier.width(180.dp),
-                                        onClick = { onLaunchGame(null) }
+                                    var showHeroVersionMenu by remember { mutableStateOf(false) }
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                                     ) {
-                                        Text(
-                                            text = stringResource(R.string.main_launch_game),
-                                            style = MaterialTheme.typography.titleMedium
-                                        )
+                                        Box {
+                                            BackgroundCard(
+                                                modifier = Modifier
+                                                    .width(150.dp)
+                                                    .clickable { showHeroVersionMenu = true },
+                                                shape = MaterialTheme.shapes.medium
+                                            ) {
+                                                Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 7.dp)) {
+                                                    Text(
+                                                        text = "SELECT VERSION",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        color = MaterialTheme.colorScheme.primary
+                                                    )
+                                                    Text(
+                                                        text = VersionsManager.currentVersion.value?.getVersionName() ?: "Choose version",
+                                                        style = MaterialTheme.typography.labelLarge,
+                                                        color = MaterialTheme.colorScheme.onSurface,
+                                                        maxLines = 1
+                                                    )
+                                                }
+                                            }
+                                            DropdownMenu(
+                                                expanded = showHeroVersionMenu,
+                                                onDismissRequest = { showHeroVersionMenu = false },
+                                                modifier = Modifier.width(240.dp)
+                                            ) {
+                                                VersionsManager.versions.forEach { availableVersion ->
+                                                    DropdownMenuItem(
+                                                        text = {
+                                                            CommonVersionInfoLayout(
+                                                                version = availableVersion,
+                                                                iconSize = 28.dp
+                                                            )
+                                                        },
+                                                        onClick = {
+                                                            VersionsManager.saveVersion(availableVersion)
+                                                            showHeroVersionMenu = false
+                                                        }
+                                                    )
+                                                }
+                                                DropdownMenuItem(
+                                                    text = { Text("Manage / Download Versions") },
+                                                    onClick = {
+                                                        showHeroVersionMenu = false
+                                                        toVersionManageScreen()
+                                                    }
+                                                )
+                                            }
+                                        }
+                                        ScalingActionButton(
+                                            modifier = Modifier.width(150.dp),
+                                            onClick = {
+                                                val selectedVersion = VersionsManager.currentVersion.value
+                                                if (selectedVersion != null && selectedVersion.isValid()) {
+                                                    onLaunchGame(selectedVersion)
+                                                } else {
+                                                    toVersionManageScreen()
+                                                }
+                                            }
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.main_launch_game),
+                                                style = MaterialTheme.typography.titleMedium
+                                            )
+                                        }
                                     }
                                 }
                                 Text(
