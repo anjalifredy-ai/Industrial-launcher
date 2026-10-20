@@ -114,7 +114,7 @@ fun LauncherScreen(
         screenKey = NormalNavKey.LauncherMain,
         currentKey = backStackViewModel.mainScreen.currentKey
     ) { isVisible ->
-        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+        Column(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
