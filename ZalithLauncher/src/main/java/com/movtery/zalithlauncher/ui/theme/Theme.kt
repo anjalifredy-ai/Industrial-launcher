@@ -655,28 +655,28 @@ fun ZalithLauncherTheme(
 
     // Industrial Launcher premium dark-blue palette. Keep the launch engine and account flows untouched.
     val targetColorScheme = baseColorScheme.copy(
-        primary = Color(0xFF4EA1FF),
+        primary = Color(0xFF3997FF),
         onPrimary = Color(0xFF061426),
         primaryContainer = Color(0xFF173E68),
         onPrimaryContainer = Color(0xFFD9EBFF),
         secondary = Color(0xFF79BBFF),
         onSecondary = Color(0xFF061426),
-        background = Color(0xFF070D18),
+        background = Color(0xFF05080F),
         onBackground = Color(0xFFEAF3FF),
-        surface = Color(0xFF0B1423),
+        surface = Color(0xFF0A111D),
         onSurface = Color(0xFFEAF3FF),
-        surfaceVariant = Color(0xFF17263A),
+        surfaceVariant = Color(0xFF111D2E),
         onSurfaceVariant = Color(0xFFB1C3DA),
         outline = Color(0xFF365170),
         outlineVariant = Color(0xFF223A55),
         inversePrimary = Color(0xFF155CA5),
         surfaceDim = Color(0xFF070D18),
         surfaceBright = Color(0xFF182941),
-        surfaceContainerLowest = Color(0xFF050A12),
-        surfaceContainerLow = Color(0xFF0A1423),
-        surfaceContainer = Color(0xFF0D192A),
-        surfaceContainerHigh = Color(0xFF14243A),
-        surfaceContainerHighest = Color(0xFF1A2C44)
+        surfaceContainerLowest = Color(0xFF03060B),
+        surfaceContainerLow = Color(0xFF080F1A),
+        surfaceContainer = Color(0xFF0D1725),
+        surfaceContainerHigh = Color(0xFF142238),
+        surfaceContainerHighest = Color(0xFF1A2A42)
     )
 
     var currentDarkTheme by remember { mutableStateOf(darkTheme) }
