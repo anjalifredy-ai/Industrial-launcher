@@ -198,6 +198,102 @@ fun LauncherScreen(
 
                 if (maxWidth < 700.dp) {
                     Column(modifier = Modifier.fillMaxSize()) {
+                        // Mobile-first hero: user can replace this image-ready panel with their own banner asset later.
+                        BackgroundCard(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp, vertical = 6.dp)
+                                .height(164.dp),
+                            shape = MaterialTheme.shapes.extraLarge
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(MaterialTheme.shapes.extraLarge)
+                                    .clickable { toVersionManageScreen() }
+                                    .padding(16.dp)
+                            ) {
+                                Column(
+                                    modifier = Modifier.align(Alignment.TopStart),
+                                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    Text(
+                                        text = "MINECRAFT",
+                                        style = MaterialTheme.typography.headlineMedium,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Text(
+                                        text = "JAVA EDITION  •  BUILD  •  EXPLORE  •  SURVIVE",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                                Column(
+                                    modifier = Modifier.align(Alignment.BottomStart),
+                                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    Text(
+                                        text = "Latest version  •  " +
+                                            (VersionsManager.currentVersion.value?.getVersionName() ?: "Choose version"),
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    ScalingActionButton(
+                                        modifier = Modifier.width(180.dp),
+                                        onClick = { onLaunchGame(null) }
+                                    ) {
+                                        Text(
+                                            text = stringResource(R.string.main_launch_game),
+                                            style = MaterialTheme.typography.titleMedium
+                                        )
+                                    }
+                                }
+                                Text(
+                                    text = "VERSION MANAGER  ›",
+                                    modifier = Modifier
+                                        .align(Alignment.BottomEnd)
+                                        .clip(MaterialTheme.shapes.medium)
+                                        .clickable { toVersionManageScreen() }
+                                        .padding(8.dp),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState())
+                                .padding(horizontal = 12.dp, vertical = 4.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            listOf(
+                                "MODS" to backStackViewModel.downloadModScreen,
+                                "RESOURCE PACKS" to backStackViewModel.downloadResourcePackScreen,
+                                "SHADERS" to backStackViewModel.downloadShadersScreen,
+                                "MODPACKS" to backStackViewModel.downloadModPackScreen
+                            ).forEach { (label, destination) ->
+                                BackgroundCard(
+                                    modifier = Modifier
+                                        .width(132.dp)
+                                        .height(58.dp)
+                                        .clickable { backStackViewModel.navigateToDownload(destination) },
+                                    shape = MaterialTheme.shapes.large
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize().padding(10.dp),
+                                        contentAlignment = Alignment.CenterStart
+                                    ) {
+                                        Text(
+                                            text = label,
+                                            style = MaterialTheme.typography.labelMedium,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            maxLines = 2
+                                        )
+                                    }
+                                }
+                            }
+                        }
                         CompositionLocalProvider(
                             LocalUriHandler provides object : UriHandler {
                                 override fun openUri(uri: String) {
