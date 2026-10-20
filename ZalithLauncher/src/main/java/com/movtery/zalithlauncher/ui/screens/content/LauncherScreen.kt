@@ -202,7 +202,11 @@ fun LauncherScreen(
                 }
 
                 if (maxWidth < 10000.dp) {
-                    Column(modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                    ) {
                         val activeAccount by AccountsManager.currentAccountFlow.collectAsStateWithLifecycle()
                         BackgroundCard(
                             modifier = Modifier
@@ -470,30 +474,7 @@ fun LauncherScreen(
                             }
                         }
 
-                        CompositionLocalProvider(
-                            LocalUriHandler provides object : UriHandler {
-                                override fun openUri(uri: String) {
-                                    onOpenLink(uri)
-                                }
-                            }
-                        ) {
-                            ContentMenu(
-                                modifier = Modifier.weight(1f).fillMaxWidth(),
-                                isVisible = isVisible,
-                                onHomePageEvent = onHomePageEvent
-                            )
-                        }
-                        RightMenu(
-                            isVisible = isVisible,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(190.dp)
-                                .padding(start = 12.dp, end = 12.dp, bottom = 8.dp),
-                            onLaunchGame = onLaunchGame,
-                            toAccountManageScreen = toAccountManageScreen,
-                            toVersionManageScreen = toVersionManageScreen,
-                            toVersionSettingsScreen = toVersionSettingsScreen
-                        )
+                        // The mobile dashboard is self-contained above; do not render the old blank homepage panel.
                     }
                 } else {
                     Row(modifier = Modifier.fillMaxSize()) {
