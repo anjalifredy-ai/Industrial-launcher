@@ -239,18 +239,18 @@ fun LauncherScreen(
                                 )
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
-                                        text = activeAccount?.username ?: "No account selected",
+                                        text = activeAccount?.username ?: "Offline / Microsoft Account",
                                         style = MaterialTheme.typography.titleSmall,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
-                                        text = if (activeAccount == null) "Add Microsoft or Offline Account" else "Account connected",
+                                        text = if (activeAccount == null) "Choose an account type to continue" else "Selected account · Ready to play",
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.primary
                                     )
                                 }
                                 Text(
-                                    text = if (activeAccount == null) "ADD ACCOUNT  +" else "MANAGE  ›",
+                                    text = if (activeAccount == null) "ADD ACCOUNT  +" else "SWITCH ACCOUNT  ›",
                                     style = MaterialTheme.typography.labelMedium,
                                     color = MaterialTheme.colorScheme.primary
                                 )
@@ -261,7 +261,7 @@ fun LauncherScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 12.dp, vertical = 6.dp)
-                                .height(238.dp),
+                                .height(280.dp),
                             shape = MaterialTheme.shapes.extraLarge
                         ) {
                             Box(
@@ -288,12 +288,12 @@ fun LauncherScreen(
                                 ) {
                                     Text(
                                         text = "MINECRAFT",
-                                        style = MaterialTheme.typography.headlineLarge,
+                                        style = MaterialTheme.typography.displaySmall,
                                         color = Color.White
                                     )
                                     Text(
-                                        text = "JAVA EDITION",
-                                        style = MaterialTheme.typography.titleMedium,
+                                        text = "JAVA EDITION  •  BUILD · EXPLORE · SURVIVE",
+                                        style = MaterialTheme.typography.titleSmall,
                                         color = Color(0xFF76B9FF)
                                     )
                                 }
