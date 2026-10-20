@@ -360,6 +360,116 @@ fun LauncherScreen(
                                 }
                             }
                         }
+                        // Installed game instances, using the launcher's real version registry.
+                        Text(
+                            text = "INSTALLATIONS",
+                            modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 6.dp),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        val installedVersions = VersionsManager.versions
+                        if (installedVersions.isEmpty()) {
+                            BackgroundCard(
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
+                                shape = MaterialTheme.shapes.large
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(14.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    VersionIconImage(version = null, modifier = Modifier.size(38.dp))
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text("No installed versions", style = MaterialTheme.typography.titleSmall)
+                                        Text("Create an installation to get started.", style = MaterialTheme.typography.bodySmall)
+                                    }
+                                    Text(
+                                        "CREATE",
+                                        modifier = Modifier.clickable { toVersionManageScreen() }.padding(8.dp),
+                                        color = MaterialTheme.colorScheme.primary,
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
+                                }
+                            }
+                        } else {
+                            installedVersions.take(4).forEach { installedVersion ->
+                                BackgroundCard(
+                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
+                                    shape = MaterialTheme.shapes.large
+                                ) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth().padding(10.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                    ) {
+                                        VersionIconImage(version = installedVersion, modifier = Modifier.size(42.dp))
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(
+                                                installedVersion.getVersionName(),
+                                                style = MaterialTheme.typography.titleSmall,
+                                                maxLines = 1
+                                            )
+                                            Text(
+                                                if (installedVersion.isValid()) installedVersion.getVersionSummary() else "Needs setup",
+                                                style = MaterialTheme.typography.bodySmall,
+                                                maxLines = 1,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
+                                        Text(
+                                            "PLAY",
+                                            modifier = Modifier
+                                                .clip(MaterialTheme.shapes.medium)
+                                                .background(MaterialTheme.colorScheme.primary)
+                                                .clickable { onLaunchGame(installedVersion) }
+                                                .padding(horizontal = 14.dp, vertical = 9.dp),
+                                            color = MaterialTheme.colorScheme.onPrimary,
+                                            style = MaterialTheme.typography.labelMedium
+                                        )
+                                        Text(
+                                            "⋮",
+                                            modifier = Modifier.clickable { navigateToVersions(installedVersion) }.padding(horizontal = 4.dp),
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            style = MaterialTheme.typography.titleLarge
+                                        )
+                                    }
+                                }
+                            }
+                            Text(
+                                "VIEW ALL  ›",
+                                modifier = Modifier.align(Alignment.End).clickable { toVersionManageScreen() }.padding(horizontal = 18.dp, vertical = 8.dp),
+                                color = MaterialTheme.colorScheme.primary,
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
+
+                        Text(
+                            text = "QUICK LINKS",
+                            modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 6.dp),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        listOf(
+                            "Browse Mods" to backStackViewModel.downloadModScreen,
+                            "Browse Resource Packs" to backStackViewModel.downloadResourcePackScreen,
+                            "Browse Shaders" to backStackViewModel.downloadShadersScreen,
+                            "Browse Modpacks" to backStackViewModel.downloadModPackScreen
+                        ).forEach { (label, destination) ->
+                            BackgroundCard(
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 3.dp)
+                                    .clickable { backStackViewModel.navigateToDownload(destination) },
+                                shape = MaterialTheme.shapes.medium
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(label, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                                    Text("›", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.titleLarge)
+                                }
+                            }
+                        }
+
                         CompositionLocalProvider(
                             LocalUriHandler provides object : UriHandler {
                                 override fun openUri(uri: String) {
