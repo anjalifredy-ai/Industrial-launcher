@@ -261,7 +261,7 @@ fun LauncherScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 12.dp, vertical = 6.dp)
-                                .height(164.dp),
+                                .height(238.dp),
                             shape = MaterialTheme.shapes.extraLarge
                         ) {
                             Box(
@@ -288,13 +288,13 @@ fun LauncherScreen(
                                 ) {
                                     Text(
                                         text = "MINECRAFT",
-                                        style = MaterialTheme.typography.headlineMedium,
-                                        color = MaterialTheme.colorScheme.onSurface
+                                        style = MaterialTheme.typography.headlineLarge,
+                                        color = Color.White
                                     )
                                     Text(
-                                        text = "JAVA EDITION  •  BUILD  •  EXPLORE  •  SURVIVE",
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = MaterialTheme.colorScheme.primary
+                                        text = "JAVA EDITION",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = Color(0xFF76B9FF)
                                     )
                                 }
                                 Column(
@@ -309,7 +309,8 @@ fun LauncherScreen(
                                         Box {
                                             BackgroundCard(
                                                 modifier = Modifier
-                                                    .width(150.dp)
+                                                    .width(156.dp)
+                                                    .height(58.dp)
                                                     .clickable { showHeroVersionMenu = true },
                                                 shape = MaterialTheme.shapes.medium
                                             ) {
@@ -356,7 +357,7 @@ fun LauncherScreen(
                                             }
                                         }
                                         ScalingActionButton(
-                                            modifier = Modifier.width(150.dp),
+                                            modifier = Modifier.width(156.dp).height(58.dp),
                                             onClick = {
                                                 val selectedVersion = VersionsManager.currentVersion.value
                                                 if (selectedVersion != null && selectedVersion.isValid()) {
@@ -401,20 +402,32 @@ fun LauncherScreen(
                             ).forEach { (label, destination) ->
                                 BackgroundCard(
                                     modifier = Modifier
-                                        .width(132.dp)
-                                        .height(58.dp)
+                                        .width(174.dp)
+                                        .height(94.dp)
                                         .clickable { backStackViewModel.navigateToDownload(destination) },
                                     shape = MaterialTheme.shapes.large
                                 ) {
-                                    Box(
-                                        modifier = Modifier.fillMaxSize().padding(10.dp),
-                                        contentAlignment = Alignment.CenterStart
+                                    Column(
+                                        modifier = Modifier.fillMaxSize().padding(14.dp),
+                                        verticalArrangement = Arrangement.Center,
+                                        horizontalAlignment = Alignment.Start
                                     ) {
                                         Text(
+                                            text = when (label) { "MODS" -> "✣"; "RESOURCE PACKS" -> "▱"; "SHADERS" -> "☼"; else -> "⬡" },
+                                            style = MaterialTheme.typography.headlineMedium,
+                                            color = when (label) { "MODS" -> Color(0xFF65A5FF); "RESOURCE PACKS" -> Color(0xFF35D6B0); "SHADERS" -> Color(0xFFFFC15B); else -> Color(0xFFE879F9) }
+                                        )
+                                        Text(
                                             text = label,
-                                            style = MaterialTheme.typography.labelMedium,
-                                            color = MaterialTheme.colorScheme.primary,
+                                            style = MaterialTheme.typography.titleSmall,
+                                            color = MaterialTheme.colorScheme.onSurface,
                                             maxLines = 2
+                                        )
+                                        Text(
+                                            text = when (label) { "MODS" -> "Enhance your game"; "RESOURCE PACKS" -> "Customize visuals"; "SHADERS" -> "Upgrade graphics"; else -> "Install collections" },
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            maxLines = 1
                                         )
                                     }
                                 }
@@ -422,9 +435,9 @@ fun LauncherScreen(
                         }
                         // Installed game instances, using the launcher's real version registry.
                         Text(
-                            text = "INSTALLATIONS",
-                            modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 6.dp),
-                            style = MaterialTheme.typography.titleMedium,
+                            text = "YOUR INSTALLATIONS",
+                            modifier = Modifier.padding(start = 16.dp, top = 20.dp, bottom = 8.dp),
+                            style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         val installedVersions = VersionsManager.versions
@@ -504,9 +517,9 @@ fun LauncherScreen(
                         }
 
                         Text(
-                            text = "QUICK LINKS",
-                            modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 6.dp),
-                            style = MaterialTheme.typography.titleMedium,
+                            text = "QUICK ACCESS",
+                            modifier = Modifier.padding(start = 16.dp, top = 22.dp, bottom = 8.dp),
+                            style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         listOf(
