@@ -162,6 +162,18 @@ fun LauncherScreen(
                             maxLines = 1
                         )
                     }
+                    Text(
+                        text = "VERSION MANAGER",
+                        modifier = Modifier
+                            .clip(MaterialTheme.shapes.large)
+                            .clickable {
+                                VersionsManager.currentVersion.value?.let(navigateToVersions)
+                            }
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1
+                    )
                 }
             }
             Row(
