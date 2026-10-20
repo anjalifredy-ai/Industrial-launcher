@@ -126,19 +126,19 @@ fun LauncherScreen(
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
                         Text(
-                            text = "INDUSTRIAL",
+                            text = "NEXUS LAUNCHER",
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "JAVA EDITION  •  GAME HUB",
+                            text = "MINECRAFT JAVA EDITION  •  GAME HUB",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = "PREMIUM",
+                        text = "JAVA",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -365,8 +365,8 @@ fun LauncherScreen(
                                     Text("N", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF69B4FF))
                                 }
                                 Column(modifier = Modifier.weight(1f)) {
-                                    Text("LAUNCHER NEWS", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
-                                    Text("Your Minecraft hub", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurface)
+                                    Text("NEXUS LAUNCHER", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                                    Text("Minecraft Java Edition", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurface)
                                     Text("Manage versions, discover mods and customize your game.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 }
                             }
