@@ -601,9 +601,9 @@ private fun customDark(
 
 @Composable
 fun ZalithLauncherTheme(
-    darkTheme: Boolean = isLauncherInDarkTheme(),
+    darkTheme: Boolean = true,
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     backgroundViewModel: BackgroundViewModel? = null,
     festivals: List<Festival> = emptyList(),
     content: @Composable () -> Unit
@@ -615,7 +615,7 @@ fun ZalithLauncherTheme(
 
     val context = LocalContext.current
 
-    val targetColorScheme = remember(darkTheme, dynamicColor, colorTheme, customColor, customPaletteStyle) {
+    val baseColorScheme = remember(darkTheme, dynamicColor, colorTheme, customColor, customPaletteStyle) {
         when {
             dynamicColor && colorTheme == ColorThemeType.DYNAMIC && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
                 if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
@@ -652,6 +652,32 @@ fun ZalithLauncherTheme(
             }
         }
     }
+
+    // Industrial Launcher premium dark-blue palette. Keep the launch engine and account flows untouched.
+    val targetColorScheme = baseColorScheme.copy(
+        primary = Color(0xFF4EA1FF),
+        onPrimary = Color(0xFF061426),
+        primaryContainer = Color(0xFF173E68),
+        onPrimaryContainer = Color(0xFFD9EBFF),
+        secondary = Color(0xFF79BBFF),
+        onSecondary = Color(0xFF061426),
+        background = Color(0xFF070D18),
+        onBackground = Color(0xFFEAF3FF),
+        surface = Color(0xFF0B1423),
+        onSurface = Color(0xFFEAF3FF),
+        surfaceVariant = Color(0xFF17263A),
+        onSurfaceVariant = Color(0xFFB1C3DA),
+        outline = Color(0xFF365170),
+        outlineVariant = Color(0xFF223A55),
+        inversePrimary = Color(0xFF155CA5),
+        surfaceDim = Color(0xFF070D18),
+        surfaceBright = Color(0xFF182941),
+        surfaceContainerLowest = Color(0xFF050A12),
+        surfaceContainerLow = Color(0xFF0A1423),
+        surfaceContainer = Color(0xFF0D192A),
+        surfaceContainerHigh = Color(0xFF14243A),
+        surfaceContainerHighest = Color(0xFF1A2C44)
+    )
 
     var currentDarkTheme by remember { mutableStateOf(darkTheme) }
     var currentDisplayScheme by remember { mutableStateOf(targetColorScheme) }
