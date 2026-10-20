@@ -176,53 +176,81 @@ fun LauncherScreen(
                     )
                 }
             }
-            Row(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
+            androidx.compose.foundation.layout.BoxWithConstraints(
+                modifier = Modifier.weight(1f).fillMaxWidth()
             ) {
-            CompositionLocalProvider(
-                LocalUriHandler provides object : UriHandler {
-                    override fun openUri(uri: String) {
-                        onOpenLink(uri)
+                val toAccountManageScreen: () -> Unit = {
+                    backStackViewModel.mainScreen.navigateTo(
+                        screenKey = NormalNavKey.AccountManager(FirstLoginMenu.NONE)
+                    )
+                }
+                val toVersionManageScreen: () -> Unit = {
+                    backStackViewModel.mainScreen.removeAndNavigateTo(
+                        remove = NestedNavKey.VersionSettings::class,
+                        screenKey = NormalNavKey.VersionsManager
+                    )
+                }
+                val toVersionSettingsScreen: () -> Unit = {
+                    VersionsManager.currentVersion.value?.let { version ->
+                        navigateToVersions(version)
                     }
                 }
-            ) {
-                ContentMenu(
-                    modifier = Modifier.weight(7f),
-                    isVisible = isVisible,
-                    onHomePageEvent = onHomePageEvent
-                )
-            }
 
-            val toAccountManageScreen: () -> Unit = {
-                backStackViewModel.mainScreen.navigateTo(
-                    screenKey = NormalNavKey.AccountManager(FirstLoginMenu.NONE)
-                )
-            }
-            val toVersionManageScreen: () -> Unit = {
-                backStackViewModel.mainScreen.removeAndNavigateTo(
-                    remove = NestedNavKey.VersionSettings::class,
-                    screenKey = NormalNavKey.VersionsManager
-                )
-            }
-            val toVersionSettingsScreen: () -> Unit = {
-                VersionsManager.currentVersion.value?.let { version ->
-                    navigateToVersions(version)
+                if (maxWidth < 700.dp) {
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        CompositionLocalProvider(
+                            LocalUriHandler provides object : UriHandler {
+                                override fun openUri(uri: String) {
+                                    onOpenLink(uri)
+                                }
+                            }
+                        ) {
+                            ContentMenu(
+                                modifier = Modifier.weight(1f).fillMaxWidth(),
+                                isVisible = isVisible,
+                                onHomePageEvent = onHomePageEvent
+                            )
+                        }
+                        RightMenu(
+                            isVisible = isVisible,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(190.dp)
+                                .padding(start = 12.dp, end = 12.dp, bottom = 8.dp),
+                            onLaunchGame = onLaunchGame,
+                            toAccountManageScreen = toAccountManageScreen,
+                            toVersionManageScreen = toVersionManageScreen,
+                            toVersionSettingsScreen = toVersionSettingsScreen
+                        )
+                    }
+                } else {
+                    Row(modifier = Modifier.fillMaxSize()) {
+                        CompositionLocalProvider(
+                            LocalUriHandler provides object : UriHandler {
+                                override fun openUri(uri: String) {
+                                    onOpenLink(uri)
+                                }
+                            }
+                        ) {
+                            ContentMenu(
+                                modifier = Modifier.weight(7f),
+                                isVisible = isVisible,
+                                onHomePageEvent = onHomePageEvent
+                            )
+                        }
+                        RightMenu(
+                            isVisible = isVisible,
+                            modifier = Modifier
+                                .weight(3f)
+                                .fillMaxHeight()
+                                .padding(top = 12.dp, end = 12.dp, bottom = 12.dp),
+                            onLaunchGame = onLaunchGame,
+                            toAccountManageScreen = toAccountManageScreen,
+                            toVersionManageScreen = toVersionManageScreen,
+                            toVersionSettingsScreen = toVersionSettingsScreen
+                        )
+                    }
                 }
-            }
-
-            RightMenu(
-                isVisible = isVisible,
-                modifier = Modifier
-                    .weight(3f)
-                    .fillMaxHeight()
-                    .padding(top = 12.dp, end = 12.dp, bottom = 12.dp),
-                onLaunchGame = onLaunchGame,
-                toAccountManageScreen = toAccountManageScreen,
-                toVersionManageScreen = toVersionManageScreen,
-                toVersionSettingsScreen = toVersionSettingsScreen
-            )
             }
         }
     }
