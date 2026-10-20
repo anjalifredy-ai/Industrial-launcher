@@ -22,6 +22,8 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -59,6 +61,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -198,7 +202,7 @@ fun LauncherScreen(
 
                 if (maxWidth < 700.dp) {
                     Column(modifier = Modifier.fillMaxSize()) {
-                        // Mobile-first hero: user can replace this image-ready panel with their own banner asset later.
+                        // Premium hero banner supplied in res/drawable-nodpi/launcher_banner.png.
                         BackgroundCard(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -210,9 +214,20 @@ fun LauncherScreen(
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .clip(MaterialTheme.shapes.extraLarge)
-                                    .clickable { toVersionManageScreen() }
-                                    .padding(16.dp)
                             ) {
+                                Image(
+                                    painter = painterResource(R.drawable.launcher_banner),
+                                    contentDescription = "Minecraft Java Edition",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(Color(0x88050B16))
+                                        .clickable { toVersionManageScreen() }
+                                        .padding(16.dp)
+                                ) {
                                 Column(
                                     modifier = Modifier.align(Alignment.TopStart),
                                     verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -256,8 +271,9 @@ fun LauncherScreen(
                                         .clickable { toVersionManageScreen() }
                                         .padding(8.dp),
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.primary
+                                    color = Color.White
                                 )
+                                }
                             }
                         }
                         Row(
@@ -374,37 +390,6 @@ private fun ContentMenu(
             .offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
         contentPadding = PaddingValues(all = 12.dp)
     ) {
-        if (BuildConfig.DEBUG) {
-            item {
-                //debug版本关不掉的警告，防止有人把测试版当正式版用 XD
-                BackgroundCard(
-                    shape = MaterialTheme.shapes.extraLarge,
-                    modifier = Modifier.padding(bottom = 12.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.generic_warning),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Text(
-                            text = stringResource(R.string.launcher_version_debug_warning, BuildKeys.LAUNCHER_NAME),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            modifier = Modifier
-                                .alpha(0.8f)
-                                .align(Alignment.End),
-                            text = stringResource(R.string.launcher_version_debug_warning_cant_close),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                }
-            }
-        }
-
         when (val state = pageState) {
             is HomePageState.Blank -> {}
             is HomePageState.Loading -> {
