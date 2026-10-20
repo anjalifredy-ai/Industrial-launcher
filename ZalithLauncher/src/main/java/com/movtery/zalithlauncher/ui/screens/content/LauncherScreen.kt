@@ -205,8 +205,50 @@ fun LauncherScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
+                            .background(Color(0xFF050B16))
                             .verticalScroll(rememberScrollState())
                     ) {
+                        // Compact launcher navigation inspired by the reference's left rail.
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState())
+                                .padding(horizontal = 12.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            listOf(
+                                "⌂  HOME" to null,
+                                "▣  INSTALLATIONS" to "versions",
+                                "✣  MODS" to "mods",
+                                "▱  RESOURCE PACKS" to "packs",
+                                "☼  SHADERS" to "shaders",
+                                "⬡  MODPACKS" to "modpacks"
+                            ).forEach { (label, target) ->
+                                val selected = target == null
+                                BackgroundCard(
+                                    modifier = Modifier
+                                        .clip(MaterialTheme.shapes.medium)
+                                        .clickable {
+                                            when (target) {
+                                                "versions" -> toVersionManageScreen()
+                                                "mods" -> backStackViewModel.navigateToDownload(backStackViewModel.downloadModScreen)
+                                                "packs" -> backStackViewModel.navigateToDownload(backStackViewModel.downloadResourcePackScreen)
+                                                "shaders" -> backStackViewModel.navigateToDownload(backStackViewModel.downloadShadersScreen)
+                                                "modpacks" -> backStackViewModel.navigateToDownload(backStackViewModel.downloadModPackScreen)
+                                            }
+                                        },
+                                    shape = MaterialTheme.shapes.medium
+                                ) {
+                                    Text(
+                                        text = label,
+                                        modifier = Modifier.padding(horizontal = 13.dp, vertical = 10.dp),
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = if (selected) Color(0xFF78C2FF) else MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                        }
                         val activeAccount by AccountsManager.currentAccountFlow.collectAsStateWithLifecycle()
                         BackgroundCard(
                             modifier = Modifier
