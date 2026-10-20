@@ -40,6 +40,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -113,7 +114,7 @@ fun LauncherScreen(
         screenKey = NormalNavKey.LauncherMain,
         currentKey = backStackViewModel.mainScreen.currentKey
     ) { isVisible ->
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -181,7 +182,7 @@ fun LauncherScreen(
                 }
             }
             androidx.compose.foundation.layout.BoxWithConstraints(
-                modifier = Modifier.weight(1f).fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 val toAccountManageScreen: () -> Unit = {
                     backStackViewModel.mainScreen.navigateTo(
@@ -201,7 +202,56 @@ fun LauncherScreen(
                 }
 
                 if (maxWidth < 700.dp) {
-                    Column(modifier = Modifier.fillMaxSize()) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        val activeAccount by AccountsManager.currentAccountFlow.collectAsStateWithLifecycle()
+                        BackgroundCard(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp, vertical = 6.dp)
+                                .clickable {
+                                    backStackViewModel.mainScreen.navigateTo(
+                                        screenKey = NormalNavKey.AccountManager(
+                                            if (activeAccount == null) FirstLoginMenu.NORMAL else FirstLoginMenu.NONE
+                                        )
+                                    )
+                                },
+                            shape = MaterialTheme.shapes.large
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(14.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                AccountAvatar(
+                                    modifier = Modifier.size(44.dp),
+                                    account = activeAccount,
+                                    onClick = {
+                                        backStackViewModel.mainScreen.navigateTo(
+                                            screenKey = NormalNavKey.AccountManager(
+                                                if (activeAccount == null) FirstLoginMenu.NORMAL else FirstLoginMenu.NONE
+                                            )
+                                        )
+                                    }
+                                )
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = activeAccount?.username ?: "No account selected",
+                                        style = MaterialTheme.typography.titleSmall,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Text(
+                                        text = if (activeAccount == null) "Add Microsoft or Offline Account" else "Account connected",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                                Text(
+                                    text = if (activeAccount == null) "ADD ACCOUNT  +" else "MANAGE  ›",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
                         // Premium hero banner supplied in res/drawable-nodpi/launcher_banner.png.
                         BackgroundCard(
                             modifier = Modifier
