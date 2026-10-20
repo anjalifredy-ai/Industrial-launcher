@@ -201,7 +201,7 @@ fun LauncherScreen(
                     }
                 }
 
-                if (maxWidth < 700.dp) {
+                if (maxWidth < 10000.dp) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         val activeAccount by AccountsManager.currentAccountFlow.collectAsStateWithLifecycle()
                         BackgroundCard(
