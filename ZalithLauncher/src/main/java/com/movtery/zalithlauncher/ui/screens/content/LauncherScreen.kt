@@ -256,6 +256,80 @@ fun LauncherScreen(
                                 )
                             }
                         }
+                        // Screenshot-inspired account hub: dedicated Offline and Microsoft entry cards.
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState())
+                                .padding(horizontal = 12.dp, vertical = 4.dp),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            BackgroundCard(
+                                modifier = Modifier
+                                    .width(172.dp)
+                                    .height(88.dp)
+                                    .clickable {
+                                        backStackViewModel.mainScreen.navigateTo(
+                                            screenKey = NormalNavKey.AccountManager(FirstLoginMenu.NORMAL)
+                                        )
+                                    },
+                                shape = MaterialTheme.shapes.large
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxSize().padding(12.dp),
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text("OFFLINE ACCOUNT", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                                    Text("Play with a local profile", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    Text("ADD / SELECT  ›", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface)
+                                }
+                            }
+                            BackgroundCard(
+                                modifier = Modifier
+                                    .width(172.dp)
+                                    .height(88.dp)
+                                    .clickable {
+                                        backStackViewModel.mainScreen.navigateTo(
+                                            screenKey = NormalNavKey.AccountManager(FirstLoginMenu.NORMAL)
+                                        )
+                                    },
+                                shape = MaterialTheme.shapes.large
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxSize().padding(12.dp),
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text("MICROSOFT ACCOUNT", style = MaterialTheme.typography.labelLarge, color = Color(0xFF68B7FF))
+                                    Text("Use your Microsoft login", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    Text("SIGN IN / SWITCH  ›", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface)
+                                }
+                            }
+                        }
+
+                        // Compact news panel in the same dark premium visual language.
+                        BackgroundCard(
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
+                            shape = MaterialTheme.shapes.large
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(14.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                Box(
+                                    modifier = Modifier.size(44.dp).clip(MaterialTheme.shapes.medium).background(Color(0xFF172B46)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text("N", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF69B4FF))
+                                }
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text("LAUNCHER NEWS", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                                    Text("Your Minecraft hub", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurface)
+                                    Text("Manage versions, discover mods and customize your game.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
+                            }
+                        }
+
                         // Premium hero banner supplied in res/drawable-nodpi/launcher_banner.png.
                         BackgroundCard(
                             modifier = Modifier
